@@ -1,5 +1,10 @@
 var express = require('express');
 var router = express.Router();
+
+
+let blogs = require('../public/Blogs')
+
+
 const date = Date()
 const user = {
   antonio: {
@@ -26,6 +31,14 @@ router.get('/favmovie', function (req, res, next) {
   res.send(user.antonio.FavMovie)
 
 });
+
+
+
+
+
+
+
+
 
 
 module.exports = router;
