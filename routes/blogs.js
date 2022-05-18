@@ -8,13 +8,13 @@ router.get('/allblogs', function (req, res, next) {
     const BlogsDate = []
     const ascBlogDate = []
     const descBlogDate = []
+    let sort = req.query.sort
+
 
     for (let i = 0; i < blogPosts.length; i++) {
         BlogsDate.push(Date.parse(blogPosts[i].createdAt))
 
     }
-
-    let sort = req.query.sort
 
 
     if (sort === 'asc') {
@@ -34,24 +34,6 @@ router.get('/allblogs', function (req, res, next) {
         console.log(descBlogDate)
     }
 
-
-
-
-
-
-
-
-    //?sort=desc
-    //?sort=asc
-
-
-
-
-
-
-
-
-
 });
 
 
@@ -62,12 +44,6 @@ router.get('/blogsbyid/:blogid', function (req, res, next) {
     const blogid = parseInt(req.params.blogid)
 
     const foundBlogId = AllBlogs[blogid];
-
-
-
-
-
-
 
     res.json(foundBlogId.text)
 
