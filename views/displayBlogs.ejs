@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            var blogs = [];
+
+            $("#getBlogs").click(function () {
+                $.get("http://localhost:4000/blogs/all", function (blogs) {
+                    blogs.forEach((blog) => {
+                        $("#blogList").append("<br>" + "<li>" + "title: " + blog.title + '<br>' + "text: " + blog.text + '<br>' + 'Author: ' + blog.author + "<br>" + blog.id + "</li>");
+                        if (sort.value === 'Assend') {
+
+                            blogs.sort(function (a, b) { return a.id - b.id })
+                        }
+                        if (sort.value === 'Desend') {
+                            blogs.sort(function (a, b) { return b.id - a.id })
+                            console.log('down')
+                        }
+
+
+
+                    });
+                });
+            });
+        });
+    </script>
+</head>
+
+<body>
+
+    <h1>Display Blogs</h1>
+    <label for="sort">Sort By:</label>
+    <select name="sort" id="sort">
+        <option value="None">None </option>
+        <option value="Assend">Assend</option>
+        <option value="Desend">Desend</option>
+    </select>
+    <button id="getBlogs">Get Blogs</button>
+    <ul id="blogList"></ul>
+
+</body>
+
+</html>

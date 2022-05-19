@@ -2,13 +2,15 @@ const { text } = require('express');
 var express = require('express');
 var router = express.Router();
 let blogs = require('../public/Blogs')
-const listBlog = blogs.blogPosts
-console.log('old list of blogs', listBlog)
+const blogList = blogs.blogPosts
+console.log('old list of blogs', blogList)
 
 
 
 
-router.get('/allblogs', function (req, res, next) {
+router.get('/all', function (req, res, next) {
+
+
     let blogPosts = blogs.blogPosts
     const BlogsDate = []
 
@@ -41,6 +43,9 @@ router.get('/allblogs', function (req, res, next) {
         console.log('if desc statement', 'desc')
         console.log(descBlogDate)
     }
+    else { res.json(blogList) }
+
+
 
 });
 
@@ -73,10 +78,11 @@ router.get('/postblog', function (req, res, next) {
 });
 
 router.post('/submit', function (req, res, next) {
+
     const data = req.body
-    console.log(data.title)
+    // console.log(data.title)
     const today = new Date()
-    console.log(today)
+    // console.log(today)
 
 
     const newPost = {
@@ -84,22 +90,21 @@ router.post('/submit', function (req, res, next) {
         text: data.text,
         author: data.author,
         createdAt: today,
-        id: listBlog.length + 1
+        id: String(blogList.length + 1)
     }
     console.log(newPost)
-    listBlog.push(newPost)
-    console.log('new list of blogs', listBlog)
-    res.send(ok)
+    blogList.push(newPost)
 
-
-
-
-
-
-
-
-
+    console.log('new list of blogs', blogList)
+    res.send('ok')
 });
+
+router.get('/displayBlogs', function (req, res, next) {
+    res.render('displayBlogs')
+
+
+
+})
 
 
 
