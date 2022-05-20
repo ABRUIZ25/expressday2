@@ -106,6 +106,23 @@ router.get('/displayBlogs', function (req, res, next) {
 
 })
 
+router.get('/displaySingleBlog', function (req, res, next) {
+    res.render('displaySingleBlog')
+})
+
+router.delete('/deleteSingleBlog/:blogid', function (req, res, next) {
+    let AllBlogs = blogs.blogPosts
+
+
+    const blogid = parseInt(req.params.blogid)
+
+    const foundBlogId = AllBlogs[blogid];
+
+    res.send('ok')
+})
+
+
+
 
 
 
