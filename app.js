@@ -8,6 +8,9 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var BlogRouter = require('./routes/blogs')
 
+var { mongoConnect } = require('./mongo')
+mongoConnect()
+
 var app = express();
 
 // view engine setup
