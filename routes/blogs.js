@@ -10,43 +10,7 @@ const { blogsDB } = require('../mongo')
 
 router.get('/all', async function (req, res, next) {
     const collection = await blogsDB().collection('posts')
-
-
-    let blogPosts = collection
-    const BlogsDate = []
-
-
-    let sort = req.query.sort
-
-
-
-
-    for (let i = 0; i < blogPosts.length; i++) {
-        BlogsDate.push(Date.parse(blogPosts[i].createdAt))
-
-    }
-
-
-    if (sort === 'asc') {
-
-
-
-        const ascBlogDate = BlogsDate.sort(function (a, b) { return a - b })
-
-
-        res.json(ascBlogDate)
-
-
-    } else if (sort === 'desc') {
-        const descBlogDate = BlogsDate.sort(function (a, b) { return b - a })
-
-
-        res.json(descBlogDate)
-
-    }
-    else { res.json(blogList) }
-
-
+    res.json(collection)
 
 });
 
@@ -71,26 +35,9 @@ router.get('/singleblog/:blogid', async function (req, res, next) {
 router.get('/postblog', async function (req, res, next) {
     const collection = await blogsDB().collection('posts')
 
-
-    let NewBlogs = collection
-
-
-
-
-
-    console.log('new blog ------', NewBlogs)
-    console.log('req.body-------', req.body)
-
-
-    res.render('postBlog')
-
-
-
 });
 
 router.post('/submit', async function (req, res, next) {
-
-
 
 
     const data = req.body
@@ -98,10 +45,7 @@ router.post('/submit', async function (req, res, next) {
     const today = new Date()
     // console.log(today)
 
-
-
-    await makePost(data.title, data.text, data.author, data.category)
-
+    await makePost(data.title, data.text, data.author, data.category, data.createdAt)
 
     res.send('ok')
 });
@@ -127,7 +71,7 @@ let makePost = async (title, text, author, category) => {
             text: text,
             author: author,
             category: category,
-            id: getPostsCollectionLength()
+            id: await getPostsCollectionLength()
         })
     return creatPost
 }
@@ -143,15 +87,19 @@ router.get('/displaySingleBlog', function (req, res, next) {
     res.render('displaySingleBlog')
 })
 
-router.delete('/deleteSingleBlog/:blogid', function (req, res, next) {
-    let AllBlogs = blogs.blogPosts
+router.delete('/deleteSingleBlog/:blogid', async function (req, res, next) {
+    const collection = await blogsDB().collection('posts')
+
+    let AllBlogs = collection
 
 
     const blogid = parseInt(req.params.blogid)
 
     const foundBlogId = AllBlogs[blogid];
 
-    res.send('ok')
+    let deletePost = await collection.deleteone(foundBlogId)
+
+    res.send('ok', deletePost)
 })
 
 
